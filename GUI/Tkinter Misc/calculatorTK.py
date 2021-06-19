@@ -2,6 +2,9 @@ from tkinter import *
 
 root = Tk()
 root.title("Calculator")
+root.iconbitmap('calc_icon.ico')
+
+
 
 # Global vars
 addend_1 = None
@@ -10,6 +13,7 @@ op_flag = 0			# 0-nothing, 1-add, 2-subtrac
 # Entry
 e_user = Entry(root, width = 45, borderwidth = 5)
 e_user.grid(row = 0, column = 0, columnspan = 4, padx = 10, pady = 10)
+
 
 # Button Functions 
 def button_pressed(value):
