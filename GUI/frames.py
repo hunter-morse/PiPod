@@ -62,6 +62,7 @@ class MenuFrame(tk.Frame):
 
 		# Create menu items
 		self.menuItems = []
+		self.index = 0
 		for i in range(len(elements)):
 			option = tk.Label(menu, text=elements[i], justify=tk.LEFT, anchor='w', bg='green', fg='white')
 			option.grid(row=i, column=0, sticky='we')
@@ -77,47 +78,52 @@ class MenuFrame(tk.Frame):
 		elif(self.menuItems[index].cget('bg') == 'blue'):
 			self.menuItems[index].configure(bg='green')
 
-def keyUpPressed(frame, index):
-	newIndex = index - 1
+def keyUpPressed(frame):
+	newIndex = frame.index - 1
 	
 	if(newIndex >= 0):
-		oldOption = frame.menuItems[index]
+		oldOption = frame.menuItems[frame.index]
 		newOption = frame.menuItems[newIndex]
 		oldOption.grid_forget()
 		newOption.grid_forget()
-		frame.selectOption(index)
+		frame.selectOption(frame.index)
 		frame.selectOption(newIndex)
-		oldOption.grid(row=index, column=0, sticky='we')
+		oldOption.grid(row=frame.index, column=0, sticky='we')
 		newOption.grid(row=newIndex, column=0, sticky='we')
+
+		print('Up- index: %d, newIndex: %d' %(frame.index, newIndex))
+		frame.index = newIndex
 
 	else:
 		pass
 
-def keyDownPressed(frame, index):
-	newIndex = index + 1
+def keyDownPressed(frame):
+	newIndex = frame.index + 1
 	
 	if(newIndex < len(frame.menuItems)):
-		oldOption = frame.menuItems[index]
+		oldOption = frame.menuItems[frame.index]
 		newOption = frame.menuItems[newIndex]
 		oldOption.grid_forget()
 		newOption.grid_forget()
-		frame.selectOption(index)
+		frame.selectOption(frame.index)
 		frame.selectOption(newIndex)
-		oldOption.grid(row=index, column=0, sticky='we')
+		oldOption.grid(row=frame.index, column=0, sticky='we')
 		newOption.grid(row=newIndex, column=0, sticky='we')
 
+		print('Down- index: %d, newIndex: %d' %(frame.index, newIndex))
+		frame.index = newIndex
 
 	else:
 		pass
 
 
-def keyPressed(event, frame, index):
+def keyPressed(event, frame):
 	key = event.keycode
 	print(key)
 	if(key == KEY_UP):
-		keyUpPressed(frame, index)
+		keyUpPressed(frame)
 	elif(key == KEY_DOWN):
-		keyDownPressed(frame, index)
+		keyDownPressed(frame)
 
 
 window = tk.Tk()
@@ -130,9 +136,9 @@ mainMenu_frame.grid(row=0, column=0, sticky='nswe')
 window.grid_columnconfigure(0, weight=1)
 window.grid_rowconfigure(0, weight=1)
 
-window.bind('<KeyPress>', lambda e: keyPressed(e, mainMenu_frame, 1))
+window.bind('<KeyPress>', lambda e: keyPressed(e, mainMenu_frame))
 
-mainMenu_frame.selectOption(1)
+mainMenu_frame.selectOption(0)
 
 
 
